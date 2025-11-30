@@ -1,0 +1,33 @@
+# filepath: Dockerfile.airflow
+FROM apache/airflow:2.9.1-python3.11
+
+# 1. root로 시스템 패키지 설치
+USER root
+WORKDIR /opt/airflow
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+      build-essential \
+      default-libmysqlclient-dev \
+      && rm -rf /var/lib/apt/lists/*
+
+# 2. 코드 복사 후 airflow 유저가 읽을 수 있게 권한 조정
+COPY . /opt/airflow/product-reviews-pipeline
+RUN chown -R airflow:root /opt/airflow/product-reviews-pipeline
+
+# 3. pip 설치는 airflow 유저로
+USER airflow
+
+RUN pip install --no-cache-dir \
+      pandas \
+      sqlalchemy \
+      mysql-connector-python \
+      openpyxl
+
+# 4. Airflow / 파이프라인 환경 변수
+ENV REVIEWS_PIPELINE_BASE_DIR=/opt/airflow/product-reviews-pipeline \
+    AIRFLOW__CORE__DAGS_FOLDER=/opt/airflow/product-reviews-pipeline/dags \
+    AIRFLOW__CORE__LOAD_EXAMPLES=False \
+    AIRFLOW__DATABASE__SQL_ALCHEMY_CONN=sqlite:////opt/airflow/airflow.db
+
+# 5. Airflow 단일 인스턴스 실행
+CMD ["bash", "-c", "airflow db migrate && airflow standalone"]

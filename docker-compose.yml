@@ -1,0 +1,53 @@
+# filepath: docker-compose.yml
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: reviews-mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: product_reviews
+      MYSQL_USER: reviews
+      MYSQL_PASSWORD: reviews
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./sql/schema.sql:/docker-entrypoint-initdb.d/schema.sql:ro
+
+  airflow:
+    build:
+      context: .
+      dockerfile: Dockerfile.airflow
+    image: product-reviews-pipeline-airflow
+    container_name: reviews-airflow
+    restart: unless-stopped
+    depends_on:
+      - mysql
+    ports:
+      - "8080:8080"
+    environment:
+      REVIEWS_PIPELINE_BASE_DIR: /opt/airflow/product-reviews-pipeline
+      REVIEWS_DB_URL: mysql+mysqlconnector://reviews:reviews@mysql:3306/product_reviews
+    volumes:
+      - .:/opt/airflow/product-reviews-pipeline
+
+  streamlit:
+    build:
+      context: .
+      dockerfile: Dockerfile.streamlit
+    image: product-reviews-pipeline-streamlit
+    container_name: reviews-streamlit
+    restart: unless-stopped
+    depends_on:
+      - mysql
+    ports:
+      - "8501:8501"
+    environment:
+      REVIEWS_DB_URL: mysql+mysqlconnector://reviews:reviews@mysql:3306/product_reviews
+      OPENAI_API_KEY: ${OPENAI_API_KEY}
+    volumes:
+      - .:/app
+
+volumes:
+  mysql_data:

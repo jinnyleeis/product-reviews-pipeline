@@ -1,0 +1,23 @@
+# filepath: Dockerfile.streamlit
+FROM python:3.11-slim
+
+WORKDIR /app
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+      build-essential \
+      default-libmysqlclient-dev \
+      && rm -rf /var/lib/apt/lists/*
+
+RUN pip install --no-cache-dir \
+      pandas \
+      sqlalchemy \
+      mysql-connector-python \
+      streamlit \
+      openai \
+      tabulate
+
+COPY . /app
+
+ENV REVIEWS_DB_URL=mysql+mysqlconnector://reviews:reviews@mysql:3306/product_reviews
+
+CMD ["bash", "-c", "streamlit run streamlit_app.py --server.port 8501 --server.address 0.0.0.0"]

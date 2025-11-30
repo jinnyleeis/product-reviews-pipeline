@@ -1,0 +1,7 @@
+# filepath: requirements-streamlit.txt
+pandas
+sqlalchemy
+mysql-connector-python
+streamlit
+openai
+tabulate

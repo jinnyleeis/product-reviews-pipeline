@@ -1,0 +1,12 @@
+# filepath: requirements.txt
+
+# Airflow 베이스 이미지 안에 이미 있는 것들도 있지만,
+# 버전 충돌 없도록 필요한 것만 적어줌
+pandas
+openpyxl
+sqlalchemy
+mysql-connector-python
+
+streamlit
+openai
+python-dotenv

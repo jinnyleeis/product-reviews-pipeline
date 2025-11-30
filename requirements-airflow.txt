@@ -1,0 +1,5 @@
+# filepath: requirements-airflow.txt
+pandas
+sqlalchemy
+mysql-connector-python
+openpyxl
