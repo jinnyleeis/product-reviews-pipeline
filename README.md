@@ -433,18 +433,9 @@ reviews-YYYY-MM-DD-to-YYYY-MM-DD-[ProductReviews]_2.xlsx
 
 ---
 
-## 8. 트러블슈팅
 
-| 증상                                                                  | 원인                                                           | 해결 방법                                                      |
-| ------------------------------------------------------------------- | ------------------------------------------------------------ | ---------------------------------------------------------- |
-| Streamlit 상단에 “Data Mart에 데이터가 없습니다. Airflow ETL(0–3단계)을 먼저 실행하세요.” | `dm_product_review_daily`, `dm_product_review_summary` 비어 있음 | Airflow에서 `product_reviews_etl` 을 한 번 실행한 뒤 새로고침           |
-| Step0에서 “No Excel files matching reviews-*.xlsx”                    | `data/input` 에 파일 없음 또는 파일명 패턴 불일치                           | 파일명을 예시 패턴에 맞게 변경하거나 폴더 위치 확인                              |
-| Step1에서 MySQL 접속 오류                                                 | DB URL, 포트 문제                                                | `docker-compose.yml` 의 `REVIEWS_DB_URL` 혹은 로컬 포트(3307) 재확인 |
-| LLM 섹션에 “OPENAI_API_KEY가 설정되지 않았습니다”                                | 환경 변수 미설정                                                    | Streamlit 서비스에 `OPENAI_API_KEY` env 추가 후 컨테이너 재기동          |
 
----
-
-## 9.느낀 점 
+## 8.느낀 점 
 
 * **Metric Governance & KPI 일관성 확보**
 
