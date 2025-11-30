@@ -2,7 +2,7 @@
 # Product Reviews – Analytics & LLM Strategy
 
 **Excel 더미 리뷰 데이터 → Airflow ETL → MySQL Data Mart → Streamlit + OpenAI LLM** 으로  
-상품 리뷰를 분석하고, 자동으로 판매 전략 인사이트를 뽑아내는 파이프라인입니다.
+상품 리뷰 분석하고, 판매 전략 인사이트 도출 파이프라인
 
 “일관된 KPI 정의와 자동 전략 생성을 목표로,
 Airflow 기반 워크플로우 + 컨테이너 환경에서 동작하는 표준 데이터 파이프라인 구조를 구현한 실습 프로젝트 입니다.
